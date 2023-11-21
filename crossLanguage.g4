@@ -8,32 +8,40 @@ grammar crossLanguage;
 	Variavel novaVariavel = new Variavel();
 	ControleVariavel cv = new ControleVariavel();
 	String codigoJava = "";
-    String ifText, atribText, printText = "";
+    String ifText, forText, atribText, printText = "";
     String nome;
 	int escopo, tipo;
+    boolean hasScan, insideFor = false;
 }
 
-vai:    { 
+vai:    
+        'X+'
+        { 
             escopo = 0;
 		    codigoJava += "public class Codigo{\n";
 		}
 		declare
-		'X+'
+        'START'
         { 	
             escopo = 1;
             codigoJava += "\tpublic static void main(String args[]){\n"; 
         }
 		declare
 		expr
-	    'X-'
+	    'END'
         {
             codigoJava += "\n\t}\n}";
             System.out.println(codigoJava);
         }
+        'X-'
    ;
 
 declare:    (
-                tipo atrib (','{codigoJava += ",";}  atrib)* PV {codigoJava += ";\n";}  
+                tipo atrib (','{codigoJava += ",";}  atrib)* (OP_INPUT {codigoJava += " = ";} scanf )? 
+                {
+                    if(!insideFor)
+                        codigoJava += ";\n";
+                }  
 		    )*
     ;
 
@@ -46,63 +54,154 @@ atrib:  ID
                 System.exit(0);
             }
             codigoJava += $ID.text;
+            if(insideFor){
+                forText = $ID.text;
+            }
         }
         (OP_ATRIB primary)? 
         {
             if($primary.text != null)
-                codigoJava += $OP_ATRIB.text+$primary.text;
+                codigoJava += " = "+$primary.text;
             if(novaVariavel.getTipo() == 2)
                 codigoJava += "f";
         }
     ;
 
 tipo:   (
-            'integer'   {	tipo = 0;
-                            if(escopo == 1){
-                                codigoJava += "\t";
+            'nat'   {	tipo = 0;
+                        if(insideFor){
+                            codigoJava += "int ";
+                        } else {
+                            if(escopo == 0){
+                                codigoJava += "\tint ";
+                            } else {
+                                codigoJava += "\t\tint ";
                             }
-							codigoJava += "\tint "; 
-						} |
-            'text'      {	tipo = 1;
-                            if(escopo == 1){
-                                codigoJava += "\t";
+                        }
+                    } |
+            'text'  {	tipo = 1;
+                        if(insideFor){
+                            codigoJava += "String ";
+                        } else {
+                            if(escopo == 0){
+                                codigoJava += "\tString ";
+                            } else {
+                                codigoJava += "\t\tString ";
                             }
-							codigoJava += "\tString ";
-						} |
-            'decimal'   {	tipo = 2;
-                            if(escopo == 1){
-                                codigoJava += "\t";
+                        }
+                    } |
+            'dec'   {	tipo = 2;
+                        if(insideFor){
+                            codigoJava += "float ";
+                        } else {
+                            if(escopo == 0){
+                                codigoJava += "\tfloat ";
+                            } else {
+                                codigoJava += "\t\tfloat ";
                             }
-							codigoJava += "\tfloat ";
-						} |
+                        }
+                    } |
         )
    ;
 
-expr:    (print | cond | atrib)*
+expr:    (printf | scanf | cond | atrib | for | while)*
     ;
 
-mathExpr: (ID | NUM | DEC) OPMAT (ID | NUM | DEC) (PV)?
-    ;
-
-cond:   'se' AP comp FP AC expr FC   
-        {
-            codigoJava += "\t\tif ("+$comp.text+") {"+printText+"\n\t\t}";
-        }
-		(
-            'senao' AC expr FC 
-            {
-                codigoJava += " else{\n\t\t\t"+$expr.text+"\n\t\t}";
-            }
-        )?
-	;
-
-print: 'print' printTypes PV
-        {
-            printText += "\n\t\t\tSystem.out.println("+$printTypes.text+");";
-        }
+mathExpr: (ID | NUM | DEC) OPMAT (ID | NUM | DEC)
     ;
 
 comp:   (ID | NUM | DEC) OPREL (ID | NUM | DEC)
+    ;
+
+cond:   'when' AP comp FP 'do'
+        AC  
+        {
+            codigoJava += "\t\tif ("+$comp.text+") {";
+        }
+        expr 
+        {
+            codigoJava += "\t\t}";
+        }
+        FC   
+		(
+            'else' {codigoJava += " else ";}('when' AP comp FP {codigoJava += "if ("+$comp.text+")";})? 
+            AC 
+            {
+                codigoJava += "{";
+            }
+            expr 
+            {
+                codigoJava += "\t\t}";
+            }
+            FC 
+        )*
+	;
+
+printf: 'outX' AP printTypes FP
+        {
+            codigoJava += "\n\t\t\tSystem.out.println("+$printTypes.text+");\n";
+        }
+    ;
+
+scanf:   'inX' AP FP
+        {
+            //if(hasScan == false){
+            //    if(escopo == 1)
+            //        codigoJava += "\t";
+            //    codigoJava += "\tScanner scan = new Scanner(System.in);\n";
+            //}
+        }
+        {
+            codigoJava += "scan.nextLine()";
+        }
+    ;
+
+for:    'iterate' AP
+        { insideFor = true; }
+        (ID {forText = $ID.text;} | declare) 
+        { 
+            if(escopo == 1){
+                codigoJava += "\n\t";
+            } else {
+                codigoJava += "\n";
+            }
+            codigoJava += "\tfor(";
+        }
+        { codigoJava += "; "+forText; }
+
+        (LOOP primary)? 
+        {
+            codigoJava += " < "+$primary.text+"; "+forText+"++)";
+        }
+        
+        FP
+
+        AC {codigoJava+="{";} 
+        expr 
+        FC {codigoJava+="\t\t}";}
+
+        {insideFor = false;}
+    ;
+
+while:  LOOP 
+        { 
+            if(escopo == 1){
+                codigoJava += "\n\t";
+            } else {
+                codigoJava += "\n";
+            }
+            codigoJava += "\twhile";
+        }
+        AP comp FP {codigoJava += "("+$comp.text+"){";}
+        AC
+        expr 
+        FC 
+        {
+            if(escopo == 1){
+                codigoJava += "\t";
+            }
+            codigoJava += "\t}";
+        }
     ;
 
 printTypes: 
@@ -123,10 +222,11 @@ NUM: [0-9]+;
 DEC: [0-9]+ '.' [0-9]+;
 OPMAT: '+' | '-' | '*' | '/' | '%' ;
 OPREL: '>' | '<' | '>=' | '<=' | '==' | '!=' ;
-PV: ';' ;
+LOOP: '->';
 AC: '{' ;
 FC: '}' ;
 AP: '(' ;
 FP: ')' ;
-OP_ATRIB: '=';
+OP_ATRIB: '>>';
+OP_INPUT: '<<';
 WS: [ \t\r\n]+ -> skip;

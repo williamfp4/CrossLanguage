@@ -1,4 +1,4 @@
-// Generated from .//crossLanguage.g4 by ANTLR 4.13.1
+// Generated from crossLanguage.g4 by ANTLR 4.13.1
 
     import java.util.*;
 
@@ -91,6 +91,18 @@ public class crossLanguageBaseListener implements crossLanguageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterComp(crossLanguageParser.CompContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitComp(crossLanguageParser.CompContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterCond(crossLanguageParser.CondContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -103,25 +115,49 @@ public class crossLanguageBaseListener implements crossLanguageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrint(crossLanguageParser.PrintContext ctx) { }
+	@Override public void enterPrintf(crossLanguageParser.PrintfContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrint(crossLanguageParser.PrintContext ctx) { }
+	@Override public void exitPrintf(crossLanguageParser.PrintfContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterComp(crossLanguageParser.CompContext ctx) { }
+	@Override public void enterScanf(crossLanguageParser.ScanfContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitComp(crossLanguageParser.CompContext ctx) { }
+	@Override public void exitScanf(crossLanguageParser.ScanfContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFor(crossLanguageParser.ForContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFor(crossLanguageParser.ForContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterWhile(crossLanguageParser.WhileContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitWhile(crossLanguageParser.WhileContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

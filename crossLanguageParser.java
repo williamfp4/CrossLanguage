@@ -1,4 +1,4 @@
-// Generated from .//crossLanguage.g4 by ANTLR 4.13.1
+// Generated from crossLanguage.g4 by ANTLR 4.13.1
 
     import java.util.*;
 
@@ -20,33 +20,34 @@ public class crossLanguageParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		ID=10, STRING=11, NUM=12, DEC=13, OPMAT=14, OPREL=15, PV=16, AC=17, FC=18, 
-		AP=19, FP=20, OP_ATRIB=21, WS=22;
+		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, ID=15, STRING=16, NUM=17, 
+		DEC=18, OPMAT=19, OPREL=20, LOOP=21, AC=22, FC=23, AP=24, FP=25, OP_ATRIB=26, 
+		OP_INPUT=27, WS=28;
 	public static final int
 		RULE_vai = 0, RULE_declare = 1, RULE_atrib = 2, RULE_tipo = 3, RULE_expr = 4, 
-		RULE_mathExpr = 5, RULE_cond = 6, RULE_print = 7, RULE_comp = 8, RULE_printTypes = 9, 
-		RULE_primary = 10;
+		RULE_mathExpr = 5, RULE_comp = 6, RULE_cond = 7, RULE_printf = 8, RULE_scanf = 9, 
+		RULE_for = 10, RULE_while = 11, RULE_printTypes = 12, RULE_primary = 13;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"vai", "declare", "atrib", "tipo", "expr", "mathExpr", "cond", "print", 
-			"comp", "printTypes", "primary"
+			"vai", "declare", "atrib", "tipo", "expr", "mathExpr", "comp", "cond", 
+			"printf", "scanf", "for", "while", "printTypes", "primary"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'X+'", "'X-'", "','", "'integer'", "'text'", "'decimal'", "'se'", 
-			"'senao'", "'print'", null, null, null, null, null, null, "';'", "'{'", 
-			"'}'", "'('", "')'", "'='"
+			null, "'X+'", "'START'", "'END'", "'X-'", "','", "'nat'", "'text'", "'dec'", 
+			"'when'", "'do'", "'else'", "'outX'", "'inX'", "'iterate'", null, null, 
+			null, null, null, null, "'->'", "'{'", "'}'", "'('", "')'", "'>>'", "'<<'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, null, null, null, "ID", "STRING", 
-			"NUM", "DEC", "OPMAT", "OPREL", "PV", "AC", "FC", "AP", "FP", "OP_ATRIB", 
-			"WS"
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, null, null, "ID", "STRING", "NUM", "DEC", "OPMAT", "OPREL", "LOOP", 
+			"AC", "FC", "AP", "FP", "OP_ATRIB", "OP_INPUT", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -99,9 +100,10 @@ public class crossLanguageParser extends Parser {
 		Variavel novaVariavel = new Variavel();
 		ControleVariavel cv = new ControleVariavel();
 		String codigoJava = "";
-	    String ifText, atribText, printText = "";
+	    String ifText, forText, atribText, printText = "";
 	    String nome;
 		int escopo, tipo;
+	    boolean hasScan, insideFor = false;
 
 	public crossLanguageParser(TokenStream input) {
 		super(input);
@@ -139,28 +141,32 @@ public class crossLanguageParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
+			setState(28);
+			match(T__0);
 			 
 			            escopo = 0;
 					    codigoJava += "public class Codigo{\n";
 					
-			setState(23);
+			setState(30);
 			declare();
-			setState(24);
-			match(T__0);
+			setState(31);
+			match(T__1);
 			 	
 			            escopo = 1;
 			            codigoJava += "\tpublic static void main(String args[]){\n"; 
 			        
-			setState(26);
+			setState(33);
 			declare();
-			setState(27);
+			setState(34);
 			expr();
-			setState(28);
-			match(T__1);
+			setState(35);
+			match(T__2);
 
 			            codigoJava += "\n\t}\n}";
 			            System.out.println(codigoJava);
 			        
+			setState(37);
+			match(T__3);
 			}
 		}
 		catch (RecognitionException re) {
@@ -188,9 +194,15 @@ public class crossLanguageParser extends Parser {
 		public AtribContext atrib(int i) {
 			return getRuleContext(AtribContext.class,i);
 		}
-		public List<TerminalNode> PV() { return getTokens(crossLanguageParser.PV); }
-		public TerminalNode PV(int i) {
-			return getToken(crossLanguageParser.PV, i);
+		public List<TerminalNode> OP_INPUT() { return getTokens(crossLanguageParser.OP_INPUT); }
+		public TerminalNode OP_INPUT(int i) {
+			return getToken(crossLanguageParser.OP_INPUT, i);
+		}
+		public List<ScanfContext> scanf() {
+			return getRuleContexts(ScanfContext.class);
+		}
+		public ScanfContext scanf(int i) {
+			return getRuleContext(ScanfContext.class,i);
 		}
 		public DeclareContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -214,43 +226,57 @@ public class crossLanguageParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(46);
+			setState(58);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,1,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,2,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
-					setState(31);
+					setState(39);
 					tipo();
-					setState(32);
+					setState(40);
 					atrib();
-					setState(38);
+					setState(46);
 					_errHandler.sync(this);
 					_la = _input.LA(1);
-					while (_la==T__2) {
+					while (_la==T__4) {
 						{
 						{
-						setState(33);
-						match(T__2);
+						setState(41);
+						match(T__4);
 						codigoJava += ",";
-						setState(35);
+						setState(43);
 						atrib();
 						}
 						}
-						setState(40);
+						setState(48);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 					}
-					setState(41);
-					match(PV);
-					codigoJava += ";\n";
+					setState(52);
+					_errHandler.sync(this);
+					_la = _input.LA(1);
+					if (_la==OP_INPUT) {
+						{
+						setState(49);
+						match(OP_INPUT);
+						codigoJava += " = ";
+						setState(51);
+						scanf();
+						}
+					}
+
+
+					                    if(!insideFor)
+					                        codigoJava += ";\n";
+					                
 					}
 					} 
 				}
-				setState(48);
+				setState(60);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,1,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,2,_ctx);
 			}
 			}
 		}
@@ -268,7 +294,6 @@ public class crossLanguageParser extends Parser {
 	@SuppressWarnings("CheckReturnValue")
 	public static class AtribContext extends ParserRuleContext {
 		public Token ID;
-		public Token OP_ATRIB;
 		public PrimaryContext primary;
 		public TerminalNode ID() { return getToken(crossLanguageParser.ID, 0); }
 		public TerminalNode OP_ATRIB() { return getToken(crossLanguageParser.OP_ATRIB, 0); }
@@ -296,7 +321,7 @@ public class crossLanguageParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(49);
+			setState(61);
 			((AtribContext)_localctx).ID = match(ID);
 			 
 			            novaVariavel = new Variavel((((AtribContext)_localctx).ID!=null?((AtribContext)_localctx).ID.getText():null), tipo, escopo);
@@ -306,22 +331,25 @@ public class crossLanguageParser extends Parser {
 			                System.exit(0);
 			            }
 			            codigoJava += (((AtribContext)_localctx).ID!=null?((AtribContext)_localctx).ID.getText():null);
+			            if(insideFor){
+			                forText = (((AtribContext)_localctx).ID!=null?((AtribContext)_localctx).ID.getText():null);
+			            }
 			        
-			setState(53);
+			setState(65);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==OP_ATRIB) {
 				{
-				setState(51);
-				((AtribContext)_localctx).OP_ATRIB = match(OP_ATRIB);
-				setState(52);
+				setState(63);
+				match(OP_ATRIB);
+				setState(64);
 				((AtribContext)_localctx).primary = primary();
 				}
 			}
 
 
 			            if((((AtribContext)_localctx).primary!=null?_input.getText(((AtribContext)_localctx).primary.start,((AtribContext)_localctx).primary.stop):null) != null)
-			                codigoJava += (((AtribContext)_localctx).OP_ATRIB!=null?((AtribContext)_localctx).OP_ATRIB.getText():null)+(((AtribContext)_localctx).primary!=null?_input.getText(((AtribContext)_localctx).primary.start,((AtribContext)_localctx).primary.stop):null);
+			                codigoJava += " = "+(((AtribContext)_localctx).primary!=null?_input.getText(((AtribContext)_localctx).primary.start,((AtribContext)_localctx).primary.stop):null);
 			            if(novaVariavel.getTipo() == 2)
 			                codigoJava += "f";
 			        
@@ -360,43 +388,58 @@ public class crossLanguageParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(64);
+			setState(76);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case T__3:
-				{
-				setState(57);
-				match(T__3);
-					tipo = 0;
-				                            if(escopo == 1){
-				                                codigoJava += "\t";
-				                            }
-											codigoJava += "\tint "; 
-										
-				}
-				break;
-			case T__4:
-				{
-				setState(59);
-				match(T__4);
-					tipo = 1;
-				                            if(escopo == 1){
-				                                codigoJava += "\t";
-				                            }
-											codigoJava += "\tString ";
-										
-				}
-				break;
 			case T__5:
 				{
-				setState(61);
+				setState(69);
 				match(T__5);
-					tipo = 2;
-				                            if(escopo == 1){
-				                                codigoJava += "\t";
+					tipo = 0;
+				                        if(insideFor){
+				                            codigoJava += "int ";
+				                        } else {
+				                            if(escopo == 0){
+				                                codigoJava += "\tint ";
+				                            } else {
+				                                codigoJava += "\t\tint ";
 				                            }
-											codigoJava += "\tfloat ";
-										
+				                        }
+				                    
+				}
+				break;
+			case T__6:
+				{
+				setState(71);
+				match(T__6);
+					tipo = 1;
+				                        if(insideFor){
+				                            codigoJava += "String ";
+				                        } else {
+				                            if(escopo == 0){
+				                                codigoJava += "\tString ";
+				                            } else {
+				                                codigoJava += "\t\tString ";
+				                            }
+				                        }
+				                    
+				}
+				break;
+			case T__7:
+				{
+				setState(73);
+				match(T__7);
+					tipo = 2;
+				                        if(insideFor){
+				                            codigoJava += "float ";
+				                        } else {
+				                            if(escopo == 0){
+				                                codigoJava += "\tfloat ";
+				                            } else {
+				                                codigoJava += "\t\tfloat ";
+				                            }
+				                        }
+				                    
 				}
 				break;
 			case ID:
@@ -421,11 +464,17 @@ public class crossLanguageParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ExprContext extends ParserRuleContext {
-		public List<PrintContext> print() {
-			return getRuleContexts(PrintContext.class);
+		public List<PrintfContext> printf() {
+			return getRuleContexts(PrintfContext.class);
 		}
-		public PrintContext print(int i) {
-			return getRuleContext(PrintContext.class,i);
+		public PrintfContext printf(int i) {
+			return getRuleContext(PrintfContext.class,i);
+		}
+		public List<ScanfContext> scanf() {
+			return getRuleContexts(ScanfContext.class);
+		}
+		public ScanfContext scanf(int i) {
+			return getRuleContext(ScanfContext.class,i);
 		}
 		public List<CondContext> cond() {
 			return getRuleContexts(CondContext.class);
@@ -438,6 +487,18 @@ public class crossLanguageParser extends Parser {
 		}
 		public AtribContext atrib(int i) {
 			return getRuleContext(AtribContext.class,i);
+		}
+		public List<ForContext> for_() {
+			return getRuleContexts(ForContext.class);
+		}
+		public ForContext for_(int i) {
+			return getRuleContext(ForContext.class,i);
+		}
+		public List<WhileContext> while_() {
+			return getRuleContexts(WhileContext.class);
+		}
+		public WhileContext while_(int i) {
+			return getRuleContext(WhileContext.class,i);
 		}
 		public ExprContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -460,37 +521,55 @@ public class crossLanguageParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(71);
+			setState(86);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 1664L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 2159104L) != 0)) {
 				{
-				setState(69);
+				setState(84);
 				_errHandler.sync(this);
 				switch (_input.LA(1)) {
-				case T__8:
+				case T__11:
 					{
-					setState(66);
-					print();
+					setState(78);
+					printf();
 					}
 					break;
-				case T__6:
+				case T__12:
 					{
-					setState(67);
+					setState(79);
+					scanf();
+					}
+					break;
+				case T__8:
+					{
+					setState(80);
 					cond();
 					}
 					break;
 				case ID:
 					{
-					setState(68);
+					setState(81);
 					atrib();
+					}
+					break;
+				case T__13:
+					{
+					setState(82);
+					for_();
+					}
+					break;
+				case LOOP:
+					{
+					setState(83);
+					while_();
 					}
 					break;
 				default:
 					throw new NoViableAltException(this);
 				}
 				}
-				setState(73);
+				setState(88);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -522,7 +601,6 @@ public class crossLanguageParser extends Parser {
 		public TerminalNode DEC(int i) {
 			return getToken(crossLanguageParser.DEC, i);
 		}
-		public TerminalNode PV() { return getToken(crossLanguageParser.PV, 0); }
 		public MathExprContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -544,9 +622,9 @@ public class crossLanguageParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(74);
+			setState(89);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 13312L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 425984L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -554,11 +632,11 @@ public class crossLanguageParser extends Parser {
 				_errHandler.reportMatch(this);
 				consume();
 			}
-			setState(75);
+			setState(90);
 			match(OPMAT);
-			setState(76);
+			setState(91);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 13312L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 425984L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -566,158 +644,6 @@ public class crossLanguageParser extends Parser {
 				_errHandler.reportMatch(this);
 				consume();
 			}
-			setState(78);
-			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
-			case 1:
-				{
-				setState(77);
-				match(PV);
-				}
-				break;
-			}
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class CondContext extends ParserRuleContext {
-		public CompContext comp;
-		public ExprContext expr;
-		public TerminalNode AP() { return getToken(crossLanguageParser.AP, 0); }
-		public CompContext comp() {
-			return getRuleContext(CompContext.class,0);
-		}
-		public TerminalNode FP() { return getToken(crossLanguageParser.FP, 0); }
-		public List<TerminalNode> AC() { return getTokens(crossLanguageParser.AC); }
-		public TerminalNode AC(int i) {
-			return getToken(crossLanguageParser.AC, i);
-		}
-		public List<ExprContext> expr() {
-			return getRuleContexts(ExprContext.class);
-		}
-		public ExprContext expr(int i) {
-			return getRuleContext(ExprContext.class,i);
-		}
-		public List<TerminalNode> FC() { return getTokens(crossLanguageParser.FC); }
-		public TerminalNode FC(int i) {
-			return getToken(crossLanguageParser.FC, i);
-		}
-		public CondContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_cond; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof crossLanguageListener ) ((crossLanguageListener)listener).enterCond(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof crossLanguageListener ) ((crossLanguageListener)listener).exitCond(this);
-		}
-	}
-
-	public final CondContext cond() throws RecognitionException {
-		CondContext _localctx = new CondContext(_ctx, getState());
-		enterRule(_localctx, 12, RULE_cond);
-		int _la;
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(80);
-			match(T__6);
-			setState(81);
-			match(AP);
-			setState(82);
-			((CondContext)_localctx).comp = comp();
-			setState(83);
-			match(FP);
-			setState(84);
-			match(AC);
-			setState(85);
-			((CondContext)_localctx).expr = expr();
-			setState(86);
-			match(FC);
-
-			            codigoJava += "\t\tif ("+(((CondContext)_localctx).comp!=null?_input.getText(((CondContext)_localctx).comp.start,((CondContext)_localctx).comp.stop):null)+") {"+printText+"\n\t\t}";
-			        
-			setState(94);
-			_errHandler.sync(this);
-			_la = _input.LA(1);
-			if (_la==T__7) {
-				{
-				setState(88);
-				match(T__7);
-				setState(89);
-				match(AC);
-				setState(90);
-				((CondContext)_localctx).expr = expr();
-				setState(91);
-				match(FC);
-
-				                codigoJava += " else{\n\t\t\t"+(((CondContext)_localctx).expr!=null?_input.getText(((CondContext)_localctx).expr.start,((CondContext)_localctx).expr.stop):null)+"\n\t\t}";
-				            
-				}
-			}
-
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	@SuppressWarnings("CheckReturnValue")
-	public static class PrintContext extends ParserRuleContext {
-		public PrintTypesContext printTypes;
-		public PrintTypesContext printTypes() {
-			return getRuleContext(PrintTypesContext.class,0);
-		}
-		public TerminalNode PV() { return getToken(crossLanguageParser.PV, 0); }
-		public PrintContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_print; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof crossLanguageListener ) ((crossLanguageListener)listener).enterPrint(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof crossLanguageListener ) ((crossLanguageListener)listener).exitPrint(this);
-		}
-	}
-
-	public final PrintContext print() throws RecognitionException {
-		PrintContext _localctx = new PrintContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_print);
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(96);
-			match(T__8);
-			setState(97);
-			((PrintContext)_localctx).printTypes = printTypes();
-			setState(98);
-			match(PV);
-
-			            printText += "\n\t\t\tSystem.out.println("+(((PrintContext)_localctx).printTypes!=null?_input.getText(((PrintContext)_localctx).printTypes.start,((PrintContext)_localctx).printTypes.stop):null)+");";
-			        
 			}
 		}
 		catch (RecognitionException re) {
@@ -762,14 +688,14 @@ public class crossLanguageParser extends Parser {
 
 	public final CompContext comp() throws RecognitionException {
 		CompContext _localctx = new CompContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_comp);
+		enterRule(_localctx, 12, RULE_comp);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(101);
+			setState(93);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 13312L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 425984L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -777,11 +703,11 @@ public class crossLanguageParser extends Parser {
 				_errHandler.reportMatch(this);
 				consume();
 			}
-			setState(102);
+			setState(94);
 			match(OPREL);
-			setState(103);
+			setState(95);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 13312L) != 0)) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & 425984L) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -789,6 +715,428 @@ public class crossLanguageParser extends Parser {
 				_errHandler.reportMatch(this);
 				consume();
 			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class CondContext extends ParserRuleContext {
+		public CompContext comp;
+		public List<TerminalNode> AP() { return getTokens(crossLanguageParser.AP); }
+		public TerminalNode AP(int i) {
+			return getToken(crossLanguageParser.AP, i);
+		}
+		public List<CompContext> comp() {
+			return getRuleContexts(CompContext.class);
+		}
+		public CompContext comp(int i) {
+			return getRuleContext(CompContext.class,i);
+		}
+		public List<TerminalNode> FP() { return getTokens(crossLanguageParser.FP); }
+		public TerminalNode FP(int i) {
+			return getToken(crossLanguageParser.FP, i);
+		}
+		public List<TerminalNode> AC() { return getTokens(crossLanguageParser.AC); }
+		public TerminalNode AC(int i) {
+			return getToken(crossLanguageParser.AC, i);
+		}
+		public List<ExprContext> expr() {
+			return getRuleContexts(ExprContext.class);
+		}
+		public ExprContext expr(int i) {
+			return getRuleContext(ExprContext.class,i);
+		}
+		public List<TerminalNode> FC() { return getTokens(crossLanguageParser.FC); }
+		public TerminalNode FC(int i) {
+			return getToken(crossLanguageParser.FC, i);
+		}
+		public CondContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_cond; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof crossLanguageListener ) ((crossLanguageListener)listener).enterCond(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof crossLanguageListener ) ((crossLanguageListener)listener).exitCond(this);
+		}
+	}
+
+	public final CondContext cond() throws RecognitionException {
+		CondContext _localctx = new CondContext(_ctx, getState());
+		enterRule(_localctx, 14, RULE_cond);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(97);
+			match(T__8);
+			setState(98);
+			match(AP);
+			setState(99);
+			((CondContext)_localctx).comp = comp();
+			setState(100);
+			match(FP);
+			setState(101);
+			match(T__9);
+			setState(102);
+			match(AC);
+
+			            codigoJava += "\t\tif ("+(((CondContext)_localctx).comp!=null?_input.getText(((CondContext)_localctx).comp.start,((CondContext)_localctx).comp.stop):null)+") {";
+			        
+			setState(104);
+			expr();
+
+			            codigoJava += "\t\t}";
+			        
+			setState(106);
+			match(FC);
+			setState(125);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			while (_la==T__10) {
+				{
+				{
+				setState(107);
+				match(T__10);
+				codigoJava += " else ";
+				setState(115);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				if (_la==T__8) {
+					{
+					setState(109);
+					match(T__8);
+					setState(110);
+					match(AP);
+					setState(111);
+					((CondContext)_localctx).comp = comp();
+					setState(112);
+					match(FP);
+					codigoJava += "if ("+(((CondContext)_localctx).comp!=null?_input.getText(((CondContext)_localctx).comp.start,((CondContext)_localctx).comp.stop):null)+")";
+					}
+				}
+
+				setState(117);
+				match(AC);
+
+				                codigoJava += "{";
+				            
+				setState(119);
+				expr();
+
+				                codigoJava += "\t\t}";
+				            
+				setState(121);
+				match(FC);
+				}
+				}
+				setState(127);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class PrintfContext extends ParserRuleContext {
+		public PrintTypesContext printTypes;
+		public TerminalNode AP() { return getToken(crossLanguageParser.AP, 0); }
+		public PrintTypesContext printTypes() {
+			return getRuleContext(PrintTypesContext.class,0);
+		}
+		public TerminalNode FP() { return getToken(crossLanguageParser.FP, 0); }
+		public PrintfContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_printf; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof crossLanguageListener ) ((crossLanguageListener)listener).enterPrintf(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof crossLanguageListener ) ((crossLanguageListener)listener).exitPrintf(this);
+		}
+	}
+
+	public final PrintfContext printf() throws RecognitionException {
+		PrintfContext _localctx = new PrintfContext(_ctx, getState());
+		enterRule(_localctx, 16, RULE_printf);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(128);
+			match(T__11);
+			setState(129);
+			match(AP);
+			setState(130);
+			((PrintfContext)_localctx).printTypes = printTypes();
+			setState(131);
+			match(FP);
+
+			            codigoJava += "\n\t\t\tSystem.out.println("+(((PrintfContext)_localctx).printTypes!=null?_input.getText(((PrintfContext)_localctx).printTypes.start,((PrintfContext)_localctx).printTypes.stop):null)+");\n";
+			        
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class ScanfContext extends ParserRuleContext {
+		public TerminalNode AP() { return getToken(crossLanguageParser.AP, 0); }
+		public TerminalNode FP() { return getToken(crossLanguageParser.FP, 0); }
+		public ScanfContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_scanf; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof crossLanguageListener ) ((crossLanguageListener)listener).enterScanf(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof crossLanguageListener ) ((crossLanguageListener)listener).exitScanf(this);
+		}
+	}
+
+	public final ScanfContext scanf() throws RecognitionException {
+		ScanfContext _localctx = new ScanfContext(_ctx, getState());
+		enterRule(_localctx, 18, RULE_scanf);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(134);
+			match(T__12);
+			setState(135);
+			match(AP);
+			setState(136);
+			match(FP);
+
+			            //if(hasScan == false){
+			            //    if(escopo == 1)
+			            //        codigoJava += "\t";
+			            //    codigoJava += "\tScanner scan = new Scanner(System.in);\n";
+			            //}
+			        
+
+			            codigoJava += "scan.nextLine()";
+			        
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class ForContext extends ParserRuleContext {
+		public Token ID;
+		public PrimaryContext primary;
+		public TerminalNode AP() { return getToken(crossLanguageParser.AP, 0); }
+		public TerminalNode FP() { return getToken(crossLanguageParser.FP, 0); }
+		public TerminalNode AC() { return getToken(crossLanguageParser.AC, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public TerminalNode FC() { return getToken(crossLanguageParser.FC, 0); }
+		public TerminalNode ID() { return getToken(crossLanguageParser.ID, 0); }
+		public DeclareContext declare() {
+			return getRuleContext(DeclareContext.class,0);
+		}
+		public TerminalNode LOOP() { return getToken(crossLanguageParser.LOOP, 0); }
+		public PrimaryContext primary() {
+			return getRuleContext(PrimaryContext.class,0);
+		}
+		public ForContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_for; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof crossLanguageListener ) ((crossLanguageListener)listener).enterFor(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof crossLanguageListener ) ((crossLanguageListener)listener).exitFor(this);
+		}
+	}
+
+	public final ForContext for_() throws RecognitionException {
+		ForContext _localctx = new ForContext(_ctx, getState());
+		enterRule(_localctx, 20, RULE_for);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(140);
+			match(T__13);
+			setState(141);
+			match(AP);
+			 insideFor = true; 
+			setState(146);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,9,_ctx) ) {
+			case 1:
+				{
+				setState(143);
+				((ForContext)_localctx).ID = match(ID);
+				forText = (((ForContext)_localctx).ID!=null?((ForContext)_localctx).ID.getText():null);
+				}
+				break;
+			case 2:
+				{
+				setState(145);
+				declare();
+				}
+				break;
+			}
+			 
+			            if(escopo == 1){
+			                codigoJava += "\n\t";
+			            } else {
+			                codigoJava += "\n";
+			            }
+			            codigoJava += "\tfor(";
+			        
+			 codigoJava += "; "+forText; 
+			setState(152);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==LOOP) {
+				{
+				setState(150);
+				match(LOOP);
+				setState(151);
+				((ForContext)_localctx).primary = primary();
+				}
+			}
+
+
+			            codigoJava += " < "+(((ForContext)_localctx).primary!=null?_input.getText(((ForContext)_localctx).primary.start,((ForContext)_localctx).primary.stop):null)+"; "+forText+"++)";
+			        
+			setState(155);
+			match(FP);
+			setState(156);
+			match(AC);
+			codigoJava+="{";
+			setState(158);
+			expr();
+			setState(159);
+			match(FC);
+			codigoJava+="\t\t}";
+			insideFor = false;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	@SuppressWarnings("CheckReturnValue")
+	public static class WhileContext extends ParserRuleContext {
+		public CompContext comp;
+		public TerminalNode LOOP() { return getToken(crossLanguageParser.LOOP, 0); }
+		public TerminalNode AP() { return getToken(crossLanguageParser.AP, 0); }
+		public CompContext comp() {
+			return getRuleContext(CompContext.class,0);
+		}
+		public TerminalNode FP() { return getToken(crossLanguageParser.FP, 0); }
+		public TerminalNode AC() { return getToken(crossLanguageParser.AC, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public TerminalNode FC() { return getToken(crossLanguageParser.FC, 0); }
+		public WhileContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_while; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof crossLanguageListener ) ((crossLanguageListener)listener).enterWhile(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof crossLanguageListener ) ((crossLanguageListener)listener).exitWhile(this);
+		}
+	}
+
+	public final WhileContext while_() throws RecognitionException {
+		WhileContext _localctx = new WhileContext(_ctx, getState());
+		enterRule(_localctx, 22, RULE_while);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(163);
+			match(LOOP);
+			 
+			            if(escopo == 1){
+			                codigoJava += "\n\t";
+			            } else {
+			                codigoJava += "\n";
+			            }
+			            codigoJava += "\twhile";
+			        
+			setState(165);
+			match(AP);
+			setState(166);
+			((WhileContext)_localctx).comp = comp();
+			setState(167);
+			match(FP);
+			codigoJava += "("+(((WhileContext)_localctx).comp!=null?_input.getText(((WhileContext)_localctx).comp.start,((WhileContext)_localctx).comp.stop):null)+"){";
+			setState(169);
+			match(AC);
+			setState(170);
+			expr();
+			setState(171);
+			match(FC);
+
+			            if(escopo == 1){
+			                codigoJava += "\t";
+			            }
+			            codigoJava += "\t}";
+			        
 			}
 		}
 		catch (RecognitionException re) {
@@ -827,15 +1175,15 @@ public class crossLanguageParser extends Parser {
 
 	public final PrintTypesContext printTypes() throws RecognitionException {
 		PrintTypesContext _localctx = new PrintTypesContext(_ctx, getState());
-		enterRule(_localctx, 18, RULE_printTypes);
+		enterRule(_localctx, 24, RULE_printTypes);
 		try {
-			setState(109);
+			setState(178);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,8,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,11,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(105);
+				setState(174);
 				match(STRING);
 				}
 				break;
@@ -847,14 +1195,14 @@ public class crossLanguageParser extends Parser {
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(107);
+				setState(176);
 				primary();
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(108);
+				setState(177);
 				mathExpr();
 				}
 				break;
@@ -892,15 +1240,15 @@ public class crossLanguageParser extends Parser {
 
 	public final PrimaryContext primary() throws RecognitionException {
 		PrimaryContext _localctx = new PrimaryContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_primary);
+		enterRule(_localctx, 26, RULE_primary);
 		try {
-			setState(115);
+			setState(184);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,9,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,12,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(111);
+				setState(180);
 				match(ID);
 				}
 				break;
@@ -912,14 +1260,14 @@ public class crossLanguageParser extends Parser {
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(113);
+				setState(182);
 				match(NUM);
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(114);
+				setState(183);
 				match(DEC);
 				}
 				break;
@@ -937,74 +1285,119 @@ public class crossLanguageParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u0016v\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
-		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
-		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
-		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0001\u0000\u0001\u0000\u0001"+
+		"\u0004\u0001\u001c\u00bb\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001"+
+		"\u0002\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004"+
+		"\u0002\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007"+
+		"\u0002\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b"+
+		"\u0002\f\u0007\f\u0002\r\u0007\r\u0001\u0000\u0001\u0000\u0001\u0000\u0001"+
 		"\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001\u0000\u0001"+
-		"\u0000\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0005"+
-		"\u0001%\b\u0001\n\u0001\f\u0001(\t\u0001\u0001\u0001\u0001\u0001\u0001"+
-		"\u0001\u0005\u0001-\b\u0001\n\u0001\f\u00010\t\u0001\u0001\u0002\u0001"+
-		"\u0002\u0001\u0002\u0001\u0002\u0003\u00026\b\u0002\u0001\u0002\u0001"+
-		"\u0002\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001"+
-		"\u0003\u0001\u0003\u0003\u0003A\b\u0003\u0001\u0004\u0001\u0004\u0001"+
-		"\u0004\u0005\u0004F\b\u0004\n\u0004\f\u0004I\t\u0004\u0001\u0005\u0001"+
-		"\u0005\u0001\u0005\u0001\u0005\u0003\u0005O\b\u0005\u0001\u0006\u0001"+
-		"\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0001"+
-		"\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0001"+
-		"\u0006\u0003\u0006_\b\u0006\u0001\u0007\u0001\u0007\u0001\u0007\u0001"+
-		"\u0007\u0001\u0007\u0001\b\u0001\b\u0001\b\u0001\b\u0001\t\u0001\t\u0001"+
-		"\t\u0001\t\u0003\tn\b\t\u0001\n\u0001\n\u0001\n\u0001\n\u0003\nt\b\n\u0001"+
-		"\n\u0000\u0000\u000b\u0000\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014"+
-		"\u0000\u0001\u0002\u0000\n\n\f\r{\u0000\u0016\u0001\u0000\u0000\u0000"+
-		"\u0002.\u0001\u0000\u0000\u0000\u00041\u0001\u0000\u0000\u0000\u0006@"+
-		"\u0001\u0000\u0000\u0000\bG\u0001\u0000\u0000\u0000\nJ\u0001\u0000\u0000"+
-		"\u0000\fP\u0001\u0000\u0000\u0000\u000e`\u0001\u0000\u0000\u0000\u0010"+
-		"e\u0001\u0000\u0000\u0000\u0012m\u0001\u0000\u0000\u0000\u0014s\u0001"+
-		"\u0000\u0000\u0000\u0016\u0017\u0006\u0000\uffff\uffff\u0000\u0017\u0018"+
-		"\u0003\u0002\u0001\u0000\u0018\u0019\u0005\u0001\u0000\u0000\u0019\u001a"+
-		"\u0006\u0000\uffff\uffff\u0000\u001a\u001b\u0003\u0002\u0001\u0000\u001b"+
-		"\u001c\u0003\b\u0004\u0000\u001c\u001d\u0005\u0002\u0000\u0000\u001d\u001e"+
-		"\u0006\u0000\uffff\uffff\u0000\u001e\u0001\u0001\u0000\u0000\u0000\u001f"+
-		" \u0003\u0006\u0003\u0000 &\u0003\u0004\u0002\u0000!\"\u0005\u0003\u0000"+
-		"\u0000\"#\u0006\u0001\uffff\uffff\u0000#%\u0003\u0004\u0002\u0000$!\u0001"+
-		"\u0000\u0000\u0000%(\u0001\u0000\u0000\u0000&$\u0001\u0000\u0000\u0000"+
-		"&\'\u0001\u0000\u0000\u0000\')\u0001\u0000\u0000\u0000(&\u0001\u0000\u0000"+
-		"\u0000)*\u0005\u0010\u0000\u0000*+\u0006\u0001\uffff\uffff\u0000+-\u0001"+
-		"\u0000\u0000\u0000,\u001f\u0001\u0000\u0000\u0000-0\u0001\u0000\u0000"+
-		"\u0000.,\u0001\u0000\u0000\u0000./\u0001\u0000\u0000\u0000/\u0003\u0001"+
-		"\u0000\u0000\u00000.\u0001\u0000\u0000\u000012\u0005\n\u0000\u000025\u0006"+
-		"\u0002\uffff\uffff\u000034\u0005\u0015\u0000\u000046\u0003\u0014\n\u0000"+
-		"53\u0001\u0000\u0000\u000056\u0001\u0000\u0000\u000067\u0001\u0000\u0000"+
-		"\u000078\u0006\u0002\uffff\uffff\u00008\u0005\u0001\u0000\u0000\u0000"+
-		"9:\u0005\u0004\u0000\u0000:A\u0006\u0003\uffff\uffff\u0000;<\u0005\u0005"+
-		"\u0000\u0000<A\u0006\u0003\uffff\uffff\u0000=>\u0005\u0006\u0000\u0000"+
-		">A\u0006\u0003\uffff\uffff\u0000?A\u0001\u0000\u0000\u0000@9\u0001\u0000"+
-		"\u0000\u0000@;\u0001\u0000\u0000\u0000@=\u0001\u0000\u0000\u0000@?\u0001"+
-		"\u0000\u0000\u0000A\u0007\u0001\u0000\u0000\u0000BF\u0003\u000e\u0007"+
-		"\u0000CF\u0003\f\u0006\u0000DF\u0003\u0004\u0002\u0000EB\u0001\u0000\u0000"+
-		"\u0000EC\u0001\u0000\u0000\u0000ED\u0001\u0000\u0000\u0000FI\u0001\u0000"+
-		"\u0000\u0000GE\u0001\u0000\u0000\u0000GH\u0001\u0000\u0000\u0000H\t\u0001"+
-		"\u0000\u0000\u0000IG\u0001\u0000\u0000\u0000JK\u0007\u0000\u0000\u0000"+
-		"KL\u0005\u000e\u0000\u0000LN\u0007\u0000\u0000\u0000MO\u0005\u0010\u0000"+
-		"\u0000NM\u0001\u0000\u0000\u0000NO\u0001\u0000\u0000\u0000O\u000b\u0001"+
-		"\u0000\u0000\u0000PQ\u0005\u0007\u0000\u0000QR\u0005\u0013\u0000\u0000"+
-		"RS\u0003\u0010\b\u0000ST\u0005\u0014\u0000\u0000TU\u0005\u0011\u0000\u0000"+
-		"UV\u0003\b\u0004\u0000VW\u0005\u0012\u0000\u0000W^\u0006\u0006\uffff\uffff"+
-		"\u0000XY\u0005\b\u0000\u0000YZ\u0005\u0011\u0000\u0000Z[\u0003\b\u0004"+
-		"\u0000[\\\u0005\u0012\u0000\u0000\\]\u0006\u0006\uffff\uffff\u0000]_\u0001"+
-		"\u0000\u0000\u0000^X\u0001\u0000\u0000\u0000^_\u0001\u0000\u0000\u0000"+
-		"_\r\u0001\u0000\u0000\u0000`a\u0005\t\u0000\u0000ab\u0003\u0012\t\u0000"+
-		"bc\u0005\u0010\u0000\u0000cd\u0006\u0007\uffff\uffff\u0000d\u000f\u0001"+
-		"\u0000\u0000\u0000ef\u0007\u0000\u0000\u0000fg\u0005\u000f\u0000\u0000"+
-		"gh\u0007\u0000\u0000\u0000h\u0011\u0001\u0000\u0000\u0000in\u0005\u000b"+
-		"\u0000\u0000jn\u0001\u0000\u0000\u0000kn\u0003\u0014\n\u0000ln\u0003\n"+
-		"\u0005\u0000mi\u0001\u0000\u0000\u0000mj\u0001\u0000\u0000\u0000mk\u0001"+
-		"\u0000\u0000\u0000ml\u0001\u0000\u0000\u0000n\u0013\u0001\u0000\u0000"+
-		"\u0000ot\u0005\n\u0000\u0000pt\u0001\u0000\u0000\u0000qt\u0005\f\u0000"+
-		"\u0000rt\u0005\r\u0000\u0000so\u0001\u0000\u0000\u0000sp\u0001\u0000\u0000"+
-		"\u0000sq\u0001\u0000\u0000\u0000sr\u0001\u0000\u0000\u0000t\u0015\u0001"+
-		"\u0000\u0000\u0000\n&.5@EGN^ms";
+		"\u0000\u0001\u0000\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
+		"\u0001\u0005\u0001-\b\u0001\n\u0001\f\u00010\t\u0001\u0001\u0001\u0001"+
+		"\u0001\u0001\u0001\u0003\u00015\b\u0001\u0001\u0001\u0001\u0001\u0005"+
+		"\u00019\b\u0001\n\u0001\f\u0001<\t\u0001\u0001\u0002\u0001\u0002\u0001"+
+		"\u0002\u0001\u0002\u0003\u0002B\b\u0002\u0001\u0002\u0001\u0002\u0001"+
+		"\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001\u0003\u0001"+
+		"\u0003\u0003\u0003M\b\u0003\u0001\u0004\u0001\u0004\u0001\u0004\u0001"+
+		"\u0004\u0001\u0004\u0001\u0004\u0005\u0004U\b\u0004\n\u0004\f\u0004X\t"+
+		"\u0004\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0005\u0001\u0006\u0001"+
+		"\u0006\u0001\u0006\u0001\u0006\u0001\u0007\u0001\u0007\u0001\u0007\u0001"+
+		"\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001"+
+		"\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001"+
+		"\u0007\u0001\u0007\u0001\u0007\u0003\u0007t\b\u0007\u0001\u0007\u0001"+
+		"\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0005\u0007|\b"+
+		"\u0007\n\u0007\f\u0007\u007f\t\u0007\u0001\b\u0001\b\u0001\b\u0001\b\u0001"+
+		"\b\u0001\b\u0001\t\u0001\t\u0001\t\u0001\t\u0001\t\u0001\t\u0001\n\u0001"+
+		"\n\u0001\n\u0001\n\u0001\n\u0001\n\u0003\n\u0093\b\n\u0001\n\u0001\n\u0001"+
+		"\n\u0001\n\u0003\n\u0099\b\n\u0001\n\u0001\n\u0001\n\u0001\n\u0001\n\u0001"+
+		"\n\u0001\n\u0001\n\u0001\n\u0001\u000b\u0001\u000b\u0001\u000b\u0001\u000b"+
+		"\u0001\u000b\u0001\u000b\u0001\u000b\u0001\u000b\u0001\u000b\u0001\u000b"+
+		"\u0001\u000b\u0001\f\u0001\f\u0001\f\u0001\f\u0003\f\u00b3\b\f\u0001\r"+
+		"\u0001\r\u0001\r\u0001\r\u0003\r\u00b9\b\r\u0001\r\u0000\u0000\u000e\u0000"+
+		"\u0002\u0004\u0006\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u0000"+
+		"\u0001\u0002\u0000\u000f\u000f\u0011\u0012\u00c3\u0000\u001c\u0001\u0000"+
+		"\u0000\u0000\u0002:\u0001\u0000\u0000\u0000\u0004=\u0001\u0000\u0000\u0000"+
+		"\u0006L\u0001\u0000\u0000\u0000\bV\u0001\u0000\u0000\u0000\nY\u0001\u0000"+
+		"\u0000\u0000\f]\u0001\u0000\u0000\u0000\u000ea\u0001\u0000\u0000\u0000"+
+		"\u0010\u0080\u0001\u0000\u0000\u0000\u0012\u0086\u0001\u0000\u0000\u0000"+
+		"\u0014\u008c\u0001\u0000\u0000\u0000\u0016\u00a3\u0001\u0000\u0000\u0000"+
+		"\u0018\u00b2\u0001\u0000\u0000\u0000\u001a\u00b8\u0001\u0000\u0000\u0000"+
+		"\u001c\u001d\u0005\u0001\u0000\u0000\u001d\u001e\u0006\u0000\uffff\uffff"+
+		"\u0000\u001e\u001f\u0003\u0002\u0001\u0000\u001f \u0005\u0002\u0000\u0000"+
+		" !\u0006\u0000\uffff\uffff\u0000!\"\u0003\u0002\u0001\u0000\"#\u0003\b"+
+		"\u0004\u0000#$\u0005\u0003\u0000\u0000$%\u0006\u0000\uffff\uffff\u0000"+
+		"%&\u0005\u0004\u0000\u0000&\u0001\u0001\u0000\u0000\u0000\'(\u0003\u0006"+
+		"\u0003\u0000(.\u0003\u0004\u0002\u0000)*\u0005\u0005\u0000\u0000*+\u0006"+
+		"\u0001\uffff\uffff\u0000+-\u0003\u0004\u0002\u0000,)\u0001\u0000\u0000"+
+		"\u0000-0\u0001\u0000\u0000\u0000.,\u0001\u0000\u0000\u0000./\u0001\u0000"+
+		"\u0000\u0000/4\u0001\u0000\u0000\u00000.\u0001\u0000\u0000\u000012\u0005"+
+		"\u001b\u0000\u000023\u0006\u0001\uffff\uffff\u000035\u0003\u0012\t\u0000"+
+		"41\u0001\u0000\u0000\u000045\u0001\u0000\u0000\u000056\u0001\u0000\u0000"+
+		"\u000067\u0006\u0001\uffff\uffff\u000079\u0001\u0000\u0000\u00008\'\u0001"+
+		"\u0000\u0000\u00009<\u0001\u0000\u0000\u0000:8\u0001\u0000\u0000\u0000"+
+		":;\u0001\u0000\u0000\u0000;\u0003\u0001\u0000\u0000\u0000<:\u0001\u0000"+
+		"\u0000\u0000=>\u0005\u000f\u0000\u0000>A\u0006\u0002\uffff\uffff\u0000"+
+		"?@\u0005\u001a\u0000\u0000@B\u0003\u001a\r\u0000A?\u0001\u0000\u0000\u0000"+
+		"AB\u0001\u0000\u0000\u0000BC\u0001\u0000\u0000\u0000CD\u0006\u0002\uffff"+
+		"\uffff\u0000D\u0005\u0001\u0000\u0000\u0000EF\u0005\u0006\u0000\u0000"+
+		"FM\u0006\u0003\uffff\uffff\u0000GH\u0005\u0007\u0000\u0000HM\u0006\u0003"+
+		"\uffff\uffff\u0000IJ\u0005\b\u0000\u0000JM\u0006\u0003\uffff\uffff\u0000"+
+		"KM\u0001\u0000\u0000\u0000LE\u0001\u0000\u0000\u0000LG\u0001\u0000\u0000"+
+		"\u0000LI\u0001\u0000\u0000\u0000LK\u0001\u0000\u0000\u0000M\u0007\u0001"+
+		"\u0000\u0000\u0000NU\u0003\u0010\b\u0000OU\u0003\u0012\t\u0000PU\u0003"+
+		"\u000e\u0007\u0000QU\u0003\u0004\u0002\u0000RU\u0003\u0014\n\u0000SU\u0003"+
+		"\u0016\u000b\u0000TN\u0001\u0000\u0000\u0000TO\u0001\u0000\u0000\u0000"+
+		"TP\u0001\u0000\u0000\u0000TQ\u0001\u0000\u0000\u0000TR\u0001\u0000\u0000"+
+		"\u0000TS\u0001\u0000\u0000\u0000UX\u0001\u0000\u0000\u0000VT\u0001\u0000"+
+		"\u0000\u0000VW\u0001\u0000\u0000\u0000W\t\u0001\u0000\u0000\u0000XV\u0001"+
+		"\u0000\u0000\u0000YZ\u0007\u0000\u0000\u0000Z[\u0005\u0013\u0000\u0000"+
+		"[\\\u0007\u0000\u0000\u0000\\\u000b\u0001\u0000\u0000\u0000]^\u0007\u0000"+
+		"\u0000\u0000^_\u0005\u0014\u0000\u0000_`\u0007\u0000\u0000\u0000`\r\u0001"+
+		"\u0000\u0000\u0000ab\u0005\t\u0000\u0000bc\u0005\u0018\u0000\u0000cd\u0003"+
+		"\f\u0006\u0000de\u0005\u0019\u0000\u0000ef\u0005\n\u0000\u0000fg\u0005"+
+		"\u0016\u0000\u0000gh\u0006\u0007\uffff\uffff\u0000hi\u0003\b\u0004\u0000"+
+		"ij\u0006\u0007\uffff\uffff\u0000j}\u0005\u0017\u0000\u0000kl\u0005\u000b"+
+		"\u0000\u0000ls\u0006\u0007\uffff\uffff\u0000mn\u0005\t\u0000\u0000no\u0005"+
+		"\u0018\u0000\u0000op\u0003\f\u0006\u0000pq\u0005\u0019\u0000\u0000qr\u0006"+
+		"\u0007\uffff\uffff\u0000rt\u0001\u0000\u0000\u0000sm\u0001\u0000\u0000"+
+		"\u0000st\u0001\u0000\u0000\u0000tu\u0001\u0000\u0000\u0000uv\u0005\u0016"+
+		"\u0000\u0000vw\u0006\u0007\uffff\uffff\u0000wx\u0003\b\u0004\u0000xy\u0006"+
+		"\u0007\uffff\uffff\u0000yz\u0005\u0017\u0000\u0000z|\u0001\u0000\u0000"+
+		"\u0000{k\u0001\u0000\u0000\u0000|\u007f\u0001\u0000\u0000\u0000}{\u0001"+
+		"\u0000\u0000\u0000}~\u0001\u0000\u0000\u0000~\u000f\u0001\u0000\u0000"+
+		"\u0000\u007f}\u0001\u0000\u0000\u0000\u0080\u0081\u0005\f\u0000\u0000"+
+		"\u0081\u0082\u0005\u0018\u0000\u0000\u0082\u0083\u0003\u0018\f\u0000\u0083"+
+		"\u0084\u0005\u0019\u0000\u0000\u0084\u0085\u0006\b\uffff\uffff\u0000\u0085"+
+		"\u0011\u0001\u0000\u0000\u0000\u0086\u0087\u0005\r\u0000\u0000\u0087\u0088"+
+		"\u0005\u0018\u0000\u0000\u0088\u0089\u0005\u0019\u0000\u0000\u0089\u008a"+
+		"\u0006\t\uffff\uffff\u0000\u008a\u008b\u0006\t\uffff\uffff\u0000\u008b"+
+		"\u0013\u0001\u0000\u0000\u0000\u008c\u008d\u0005\u000e\u0000\u0000\u008d"+
+		"\u008e\u0005\u0018\u0000\u0000\u008e\u0092\u0006\n\uffff\uffff\u0000\u008f"+
+		"\u0090\u0005\u000f\u0000\u0000\u0090\u0093\u0006\n\uffff\uffff\u0000\u0091"+
+		"\u0093\u0003\u0002\u0001\u0000\u0092\u008f\u0001\u0000\u0000\u0000\u0092"+
+		"\u0091\u0001\u0000\u0000\u0000\u0093\u0094\u0001\u0000\u0000\u0000\u0094"+
+		"\u0095\u0006\n\uffff\uffff\u0000\u0095\u0098\u0006\n\uffff\uffff\u0000"+
+		"\u0096\u0097\u0005\u0015\u0000\u0000\u0097\u0099\u0003\u001a\r\u0000\u0098"+
+		"\u0096\u0001\u0000\u0000\u0000\u0098\u0099\u0001\u0000\u0000\u0000\u0099"+
+		"\u009a\u0001\u0000\u0000\u0000\u009a\u009b\u0006\n\uffff\uffff\u0000\u009b"+
+		"\u009c\u0005\u0019\u0000\u0000\u009c\u009d\u0005\u0016\u0000\u0000\u009d"+
+		"\u009e\u0006\n\uffff\uffff\u0000\u009e\u009f\u0003\b\u0004\u0000\u009f"+
+		"\u00a0\u0005\u0017\u0000\u0000\u00a0\u00a1\u0006\n\uffff\uffff\u0000\u00a1"+
+		"\u00a2\u0006\n\uffff\uffff\u0000\u00a2\u0015\u0001\u0000\u0000\u0000\u00a3"+
+		"\u00a4\u0005\u0015\u0000\u0000\u00a4\u00a5\u0006\u000b\uffff\uffff\u0000"+
+		"\u00a5\u00a6\u0005\u0018\u0000\u0000\u00a6\u00a7\u0003\f\u0006\u0000\u00a7"+
+		"\u00a8\u0005\u0019\u0000\u0000\u00a8\u00a9\u0006\u000b\uffff\uffff\u0000"+
+		"\u00a9\u00aa\u0005\u0016\u0000\u0000\u00aa\u00ab\u0003\b\u0004\u0000\u00ab"+
+		"\u00ac\u0005\u0017\u0000\u0000\u00ac\u00ad\u0006\u000b\uffff\uffff\u0000"+
+		"\u00ad\u0017\u0001\u0000\u0000\u0000\u00ae\u00b3\u0005\u0010\u0000\u0000"+
+		"\u00af\u00b3\u0001\u0000\u0000\u0000\u00b0\u00b3\u0003\u001a\r\u0000\u00b1"+
+		"\u00b3\u0003\n\u0005\u0000\u00b2\u00ae\u0001\u0000\u0000\u0000\u00b2\u00af"+
+		"\u0001\u0000\u0000\u0000\u00b2\u00b0\u0001\u0000\u0000\u0000\u00b2\u00b1"+
+		"\u0001\u0000\u0000\u0000\u00b3\u0019\u0001\u0000\u0000\u0000\u00b4\u00b9"+
+		"\u0005\u000f\u0000\u0000\u00b5\u00b9\u0001\u0000\u0000\u0000\u00b6\u00b9"+
+		"\u0005\u0011\u0000\u0000\u00b7\u00b9\u0005\u0012\u0000\u0000\u00b8\u00b4"+
+		"\u0001\u0000\u0000\u0000\u00b8\u00b5\u0001\u0000\u0000\u0000\u00b8\u00b6"+
+		"\u0001\u0000\u0000\u0000\u00b8\u00b7\u0001\u0000\u0000\u0000\u00b9\u001b"+
+		"\u0001\u0000\u0000\u0000\r.4:ALTVs}\u0092\u0098\u00b2\u00b8";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

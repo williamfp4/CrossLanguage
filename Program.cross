@@ -1,9 +1,24 @@
-integer a;
 X+
-	integer b = 6;
-	decimal c = 22.5;
-	se (b < c){
-		print "C is higher";
-        print 5 + 6;
-	}
+	nat x
+	START
+		nat b >> 6
+		dec c >> 22.5
+		nat x >> 0
+
+		when (b < c) do {
+			outX("C is higher")
+		} else when (b > c){
+			outX("B is higher")
+		} else {
+			outX("They are equal")
+		}
+
+		iterate (x -> 5){
+			outX(x)
+		}
+		
+		-> (x < 6) {
+			outX("x < 5!")
+		}
+	END
 X-

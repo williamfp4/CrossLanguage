@@ -1,4 +1,4 @@
-// Generated from .//crossLanguage.g4 by ANTLR 4.13.1
+// Generated from crossLanguage.g4 by ANTLR 4.13.1
 
     import java.util.*;
 
@@ -70,6 +70,16 @@ public interface crossLanguageListener extends ParseTreeListener {
 	 */
 	void exitMathExpr(crossLanguageParser.MathExprContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link crossLanguageParser#comp}.
+	 * @param ctx the parse tree
+	 */
+	void enterComp(crossLanguageParser.CompContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link crossLanguageParser#comp}.
+	 * @param ctx the parse tree
+	 */
+	void exitComp(crossLanguageParser.CompContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link crossLanguageParser#cond}.
 	 * @param ctx the parse tree
 	 */
@@ -80,25 +90,45 @@ public interface crossLanguageListener extends ParseTreeListener {
 	 */
 	void exitCond(crossLanguageParser.CondContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link crossLanguageParser#print}.
+	 * Enter a parse tree produced by {@link crossLanguageParser#printf}.
 	 * @param ctx the parse tree
 	 */
-	void enterPrint(crossLanguageParser.PrintContext ctx);
+	void enterPrintf(crossLanguageParser.PrintfContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link crossLanguageParser#print}.
+	 * Exit a parse tree produced by {@link crossLanguageParser#printf}.
 	 * @param ctx the parse tree
 	 */
-	void exitPrint(crossLanguageParser.PrintContext ctx);
+	void exitPrintf(crossLanguageParser.PrintfContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link crossLanguageParser#comp}.
+	 * Enter a parse tree produced by {@link crossLanguageParser#scanf}.
 	 * @param ctx the parse tree
 	 */
-	void enterComp(crossLanguageParser.CompContext ctx);
+	void enterScanf(crossLanguageParser.ScanfContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link crossLanguageParser#comp}.
+	 * Exit a parse tree produced by {@link crossLanguageParser#scanf}.
 	 * @param ctx the parse tree
 	 */
-	void exitComp(crossLanguageParser.CompContext ctx);
+	void exitScanf(crossLanguageParser.ScanfContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link crossLanguageParser#for}.
+	 * @param ctx the parse tree
+	 */
+	void enterFor(crossLanguageParser.ForContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link crossLanguageParser#for}.
+	 * @param ctx the parse tree
+	 */
+	void exitFor(crossLanguageParser.ForContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link crossLanguageParser#while}.
+	 * @param ctx the parse tree
+	 */
+	void enterWhile(crossLanguageParser.WhileContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link crossLanguageParser#while}.
+	 * @param ctx the parse tree
+	 */
+	void exitWhile(crossLanguageParser.WhileContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link crossLanguageParser#printTypes}.
 	 * @param ctx the parse tree
