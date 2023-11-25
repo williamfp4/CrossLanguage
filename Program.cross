@@ -4,6 +4,7 @@ X+
 		nat b >> 6
 		dec c >> 22.5
 		nat x >> 0
+		nat t << inX()
 
 		when (b < c) do {
 			outX("C is higher")
@@ -13,7 +14,7 @@ X+
 			outX("They are equal")
 		}
 
-		iterate (x -> 5){
+		iterate (nat y >> 0 -> 5){
 			outX(x)
 		}
 		

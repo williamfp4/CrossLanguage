@@ -150,6 +150,9 @@ scanf:   'inX' AP FP
             //        codigoJava += "\t";
             //    codigoJava += "\tScanner scan = new Scanner(System.in);\n";
             //}
+            if(hasScan == false){
+                hasScan = true;
+            }
         }
         {
             codigoJava += "scan.nextLine()";
@@ -158,7 +161,6 @@ scanf:   'inX' AP FP
 
 for:    'iterate' AP
         { insideFor = true; }
-        (ID {forText = $ID.text;} | declare) 
         { 
             if(escopo == 1){
                 codigoJava += "\n\t";
@@ -167,6 +169,8 @@ for:    'iterate' AP
             }
             codigoJava += "\tfor(";
         }
+        (ID {forText = $ID.text;} | declare) 
+        
         { codigoJava += "; "+forText; }
 
         (LOOP primary)? 
