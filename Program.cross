@@ -1,25 +1,40 @@
 X+
-	nat x
-	START
-		nat b >> 6
-		dec c >> 22.5
-		nat x >> 0
-		nat t << inX()
+	nat b >> :6 + 5
+	dec c >> 22.5
+	nat x >> 0
+	inX(dec t)
+	outX(t)
+	outX(c)
+	when (b < c) do {
+		outX("C is higher")
+		outX("teste1")
+		when (x > t) do {
+			outX("teste2")
+			when (c == c) do {
+				outX("teste3")
+			} else when (t < c){
+				outX(:c + t)
+			} else {
+				iterate (x >> 0 -> 2){
+					outX(x)
+					nat ab >> 7
+					iterate (x >> 1 -> 7){
+						outX(x)
+					}
+				}
+			}
+		}
+	} else when (b > c){
+		outX("B is higher")
+	} else {
+		outX("They are equal")
+	}
 
-		when (b < c) do {
-			outX("C is higher")
-		} else when (b > c){
-			outX("B is higher")
-		} else {
-			outX("They are equal")
-		}
-
-		iterate (nat y >> 0 -> 5){
-			outX(x)
-		}
-		
-		-> (x < 6) {
-			outX("x < 5!")
-		}
-	END
+	iterate (x -> 5){
+		outX(x)
+	}
+	
+	-> (x < 6) {
+		outX("x < 5!")
+	}
 X-

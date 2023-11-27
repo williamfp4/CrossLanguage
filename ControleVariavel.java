@@ -11,7 +11,7 @@ public class ControleVariavel {
     
     public boolean adiciona(Variavel v){
         for(int i=0; i<contvar.size(); i++){
-            if( (contvar.get(i).getNome().equals(v.getNome())) && (contvar.get(i).getEscopo() == v.getEscopo()) )
+            if( (contvar.get(i).getNome().equals(v.getNome())) && (contvar.get(i).getValor() == v.getValor()) )
                 return false;
         }
         contvar.add(v);

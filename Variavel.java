@@ -1,12 +1,12 @@
 public class Variavel {
     private String nome;
     private int tipo;
-    private int escopo;
+    private int valor;
 
-    public Variavel(String nome, int tipo, int escopo) {
+    public Variavel(String nome, int tipo, int valor) {
         this.nome = nome;
         this.tipo = tipo;
-        this.escopo = escopo;
+        this.valor = valor;
     }
 
     public Variavel() {
@@ -28,15 +28,15 @@ public class Variavel {
         this.tipo = tipo;
     }
 
-    public int getEscopo() {
-        return escopo;
+    public int getValor() {
+        return valor;
     }
 
-    public void setEscopo(int escopo) {
-        this.escopo = escopo;
+    public void setValor(int valor) {
+        this.valor = valor;
     }
     
     public void imprime(){
-        System.out.println("Nome: "+nome+"\nTipo: "+tipo+"\nEscopo: "+escopo);
+        System.out.println("Nome: "+nome+"\nTipo: "+tipo+"\nValor: "+valor);
     }
 }

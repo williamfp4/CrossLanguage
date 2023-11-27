@@ -1,6 +1,9 @@
-// Generated from ./crossLanguage.g4 by ANTLR 4.13.1
+// Generated from crossLanguage.g4 by ANTLR 4.13.1
 
     import java.util.*;
+    import java.util.ArrayList;
+    import java.util.regex.Matcher;
+    import java.util.regex.Pattern;
 
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -91,6 +94,42 @@ public class crossLanguageBaseListener implements crossLanguageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMathAdd(crossLanguageParser.MathAddContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMathAdd(crossLanguageParser.MathAddContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMathMul(crossLanguageParser.MathMulContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMathMul(crossLanguageParser.MathMulContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterUnaryExpr(crossLanguageParser.UnaryExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitUnaryExpr(crossLanguageParser.UnaryExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterComp(crossLanguageParser.CompContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -98,6 +137,18 @@ public class crossLanguageBaseListener implements crossLanguageListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitComp(crossLanguageParser.CompContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterComptext(crossLanguageParser.ComptextContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitComptext(crossLanguageParser.ComptextContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

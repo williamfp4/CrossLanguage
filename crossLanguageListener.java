@@ -1,6 +1,9 @@
-// Generated from ./crossLanguage.g4 by ANTLR 4.13.1
+// Generated from crossLanguage.g4 by ANTLR 4.13.1
 
     import java.util.*;
+    import java.util.ArrayList;
+    import java.util.regex.Matcher;
+    import java.util.regex.Pattern;
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -70,6 +73,36 @@ public interface crossLanguageListener extends ParseTreeListener {
 	 */
 	void exitMathExpr(crossLanguageParser.MathExprContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link crossLanguageParser#mathAdd}.
+	 * @param ctx the parse tree
+	 */
+	void enterMathAdd(crossLanguageParser.MathAddContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link crossLanguageParser#mathAdd}.
+	 * @param ctx the parse tree
+	 */
+	void exitMathAdd(crossLanguageParser.MathAddContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link crossLanguageParser#mathMul}.
+	 * @param ctx the parse tree
+	 */
+	void enterMathMul(crossLanguageParser.MathMulContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link crossLanguageParser#mathMul}.
+	 * @param ctx the parse tree
+	 */
+	void exitMathMul(crossLanguageParser.MathMulContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link crossLanguageParser#unaryExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnaryExpr(crossLanguageParser.UnaryExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link crossLanguageParser#unaryExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnaryExpr(crossLanguageParser.UnaryExprContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link crossLanguageParser#comp}.
 	 * @param ctx the parse tree
 	 */
@@ -79,6 +112,16 @@ public interface crossLanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitComp(crossLanguageParser.CompContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link crossLanguageParser#comptext}.
+	 * @param ctx the parse tree
+	 */
+	void enterComptext(crossLanguageParser.ComptextContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link crossLanguageParser#comptext}.
+	 * @param ctx the parse tree
+	 */
+	void exitComptext(crossLanguageParser.ComptextContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link crossLanguageParser#cond}.
 	 * @param ctx the parse tree
