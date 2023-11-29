@@ -1,9 +1,6 @@
 // Generated from crossLanguage.g4 by ANTLR 4.13.1
 
     import java.util.*;
-    import java.util.ArrayList;
-    import java.util.regex.Matcher;
-    import java.util.regex.Pattern;
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -13,15 +10,15 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface crossLanguageListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link crossLanguageParser#vai}.
+	 * Enter a parse tree produced by {@link crossLanguageParser#start}.
 	 * @param ctx the parse tree
 	 */
-	void enterVai(crossLanguageParser.VaiContext ctx);
+	void enterStart(crossLanguageParser.StartContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link crossLanguageParser#vai}.
+	 * Exit a parse tree produced by {@link crossLanguageParser#start}.
 	 * @param ctx the parse tree
 	 */
-	void exitVai(crossLanguageParser.VaiContext ctx);
+	void exitStart(crossLanguageParser.StartContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link crossLanguageParser#declare}.
 	 * @param ctx the parse tree
@@ -43,15 +40,15 @@ public interface crossLanguageListener extends ParseTreeListener {
 	 */
 	void exitAtrib(crossLanguageParser.AtribContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link crossLanguageParser#tipo}.
+	 * Enter a parse tree produced by {@link crossLanguageParser#type}.
 	 * @param ctx the parse tree
 	 */
-	void enterTipo(crossLanguageParser.TipoContext ctx);
+	void enterType(crossLanguageParser.TypeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link crossLanguageParser#tipo}.
+	 * Exit a parse tree produced by {@link crossLanguageParser#type}.
 	 * @param ctx the parse tree
 	 */
-	void exitTipo(crossLanguageParser.TipoContext ctx);
+	void exitType(crossLanguageParser.TypeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link crossLanguageParser#expr}.
 	 * @param ctx the parse tree
@@ -172,6 +169,26 @@ public interface crossLanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitWhile(crossLanguageParser.WhileContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link crossLanguageParser#increment}.
+	 * @param ctx the parse tree
+	 */
+	void enterIncrement(crossLanguageParser.IncrementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link crossLanguageParser#increment}.
+	 * @param ctx the parse tree
+	 */
+	void exitIncrement(crossLanguageParser.IncrementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link crossLanguageParser#break}.
+	 * @param ctx the parse tree
+	 */
+	void enterBreak(crossLanguageParser.BreakContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link crossLanguageParser#break}.
+	 * @param ctx the parse tree
+	 */
+	void exitBreak(crossLanguageParser.BreakContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link crossLanguageParser#printTypes}.
 	 * @param ctx the parse tree

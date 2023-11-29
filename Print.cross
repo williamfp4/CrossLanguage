@@ -1,0 +1,8 @@
+X+
+	nat x >> 0
+	dec y >> 7.3
+	txt z >> "Texto"
+	outX(x)
+	outX(y)
+	outX(z)
+X-

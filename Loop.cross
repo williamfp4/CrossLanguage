@@ -1,0 +1,14 @@
+X+
+	iterate(dec t >> 0.5 -> 5){
+		outX(t)
+	} 
+
+	nat x >> 0
+	-> (x < 100){
+		outX("This is message "+ (x+1))
+		x>+
+		when(x == 10) do{
+			break
+		}
+	}
+X-

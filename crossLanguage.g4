@@ -2,27 +2,35 @@ grammar crossLanguage;
 
 @header {
     import java.util.*;
-    import java.util.ArrayList;
-    import java.util.regex.Matcher;
-    import java.util.regex.Pattern;
 }
 
 @members {
-	Variavel novaVariavel = new Variavel();
-	ControleVariavel cv = new ControleVariavel();
-	String codigoJava = "";
-    String mathText, ifText, forText, atribText, printText = "";
-    String nome;
-	int valor, tipo, insideExpr, numInt, numFloat;;
-    boolean hasScan = false, initScan = false, initFor = false;
+	Variable newVariable = new Variable();
+	VariableController vc = new VariableController();
+	String javaCode = "";
+    String name, mathText, ifText, forText, atribText, printText = "";
+	int value, type, insideExpr, numInt, numFloat;
+    boolean notDeclared, hasScan = false, initScan = false, initFor = false, insideFor = false, insideDeclare = false;
+
     private void tab(){
         if(insideExpr > 0){
             for(int i=0; i<insideExpr; i++){
-                codigoJava += "\t";
+                javaCode += "\t";
             }
         }
-        codigoJava += "\t\t";
+        javaCode += "\t\t";
     } 
+
+    private void isDeclared(String text){
+        try {
+            if(vc.exists(text) == false){
+                throw new Exception("Variable "+text+" is not declared!");
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
 
     private static boolean isInteger(String s) {
         try {
@@ -51,27 +59,36 @@ grammar crossLanguage;
     }
 }
 
-vai:    
+start:    
         'X+'
         { 
-            codigoJava += "import java.util.*;\n\n";
-		    codigoJava += "public class Codigo{\n";
-            codigoJava += "\tpublic static void main(String args[]){\n"; 
+            javaCode += "import java.util.*;\n\n";
+		    javaCode += "public class Codigo{\n";
+            javaCode += "\tpublic static void main(String args[]){\n"; 
 		}
 		expr
         {
-            codigoJava += "\n\t}\n}";
-            System.out.println(codigoJava);
+            javaCode += "\n\t}\n}";
+            System.out.println(javaCode);
         }
         'X-'
    ;
 
-declare:    
-            (
-                tipo atrib (','{codigoJava += ",";}  atrib)*
+declare:    (
+                type atrib (','{javaCode += ",";}  atrib)*
                 {
+                    try{
+                        int index = $atrib.text.indexOf('>');
+                        if(!notDeclared){
+                            throw new Exception("Variable '"+$atrib.text.substring(0, index)+"' has been declared!");
+                        }
+                    } catch(Exception e){
+                        e.printStackTrace();
+                        System.exit(1);
+                    }
+                    
                     if(!initScan && !initFor){
-                        codigoJava += ";\n";
+                        javaCode += ";\n";
                     }
                 }  
 		    )+
@@ -79,14 +96,14 @@ declare:
 
 atrib:  ID 
         { 
-            novaVariavel = new Variavel($ID.text, tipo, valor);
-            boolean declarado = cv.adiciona(novaVariavel);
-            if(!declarado){
-                novaVariavel = cv.busca($ID.text);
-                tipo = novaVariavel.getTipo();
+            newVariable = new Variable($ID.text, type, value);
+            notDeclared = vc.add(newVariable);
+            if(!notDeclared){
+                newVariable = vc.search($ID.text);
+                type = newVariable.getType();
             }
-            codigoJava += $ID.text;
-            if(insideExpr > 0){
+            javaCode += $ID.text;
+            if(insideFor){
                 forText = $ID.text;
             }
         }
@@ -95,56 +112,76 @@ atrib:  ID
             (
                 mathExpr
                 {
-                    if(numFloat > 0 && tipo == 0){
-                        System.out.println(mathText + " is not a valid Natural number expression");
+                    try {
+                        if(numFloat > 0 && type == 0){
+                            throw new Exception(mathText + " is not a valid Natural number expression");
+                        } else if(numInt > 0 && type == 2){
+                            throw new Exception(mathText + " is not a valid Decimal number expression");
+                        }
+
+                        if(type == 2){
+                            javaCode += " = (float)("+mathText+")";
+                        } else{
+                            javaCode += " = " + mathText;
+                        }
+                    } catch(Exception e){
+                        e.printStackTrace();
                         System.exit(1);
                     }
-                    
-                    if(numInt > 0 && tipo == 2){
-                        System.out.println(mathText + " is not a valid Decimal number expression");
-                        System.exit(1);
-                    }
-                    codigoJava += " = " + mathText;
                 }
                 |
                 primary 
                 {
                     if($primary.text != null){
-                        codigoJava += " = "+$primary.text;
+                        javaCode += " = "+$primary.text;
                     }
-                    switch(tipo){
-                        case 0: if(isInteger($primary.text) == false){System.out.println("Not a natural number!"); System.exit(1);} break;
-                        case 2: if(isFloat($primary.text) == false){System.out.println("Not a decimal number!"); System.exit(1);} if(!initFor){ codigoJava += "f";} break;
-                        default: System.out.println("Variable type invalid!"); break;
+                    try {
+                        switch(type){
+                            case 0: if(isInteger($primary.text) == false){
+                                        throw new Exception("Not a natural number!");
+                                    } 
+                                break;
+
+                            case 2: if(isFloat($primary.text) == false){
+                                        throw new Exception("Not a decimal number!");
+                                    } 
+                                    { javaCode += "f";} 
+                                break;
+
+                            default: throw new Exception("Variable type invalid!"); 
+                        }
+                    } catch(Exception e){
+                        e.printStackTrace();
+                        System.exit(1);
                     }
                 }
                 |
                 STRING
                 {
-                    codigoJava += " = "+$STRING.text;
+                    javaCode += " = "+$STRING.text;
                 }
             )
         )? 
     ;
 
-tipo:   (
-            'nat'   {	tipo = 0;
+type:   (
+            'nat'   {	type = 0;
                         if(!initFor){
                             tab();
                         }
-                        codigoJava += "int ";
+                        javaCode += "int ";
                     } |
-            'txt'  {	tipo = 1;
+            'txt'  {	type = 1;
                         if(!initFor){
                             tab();
                         }
-                        codigoJava += "String ";
+                        javaCode += "String ";
                     } |
-            'dec'   {	tipo = 2;
+            'dec'   {	type = 2;
                         if(!initFor){
                             tab();
                         }
-                        codigoJava += "float ";
+                        javaCode += "float ";
                     } |
         )
    ;
@@ -156,6 +193,9 @@ expr:   (
             | {tab();} atrib 
             | {tab();} for 
             | {tab();} while
+            | {tab();} increment
+            | {tab();} break
+            | atrib
             | declare
             | mathExpr
         )*
@@ -165,49 +205,40 @@ mathExpr:   OPMAT mathAdd
             {
                 numInt = numFloat = 0;
 
-                String var = "[a-zA-Z_]+";
-                String num = "[0-9]+";
-
-                Pattern regVar = Pattern.compile(var);
-                Pattern regNum = Pattern.compile(num);
-
                 mathText = $mathAdd.text;
+                String operation = mathText.replace("(", "").replace(")", "");
 
-                Matcher matchVar = regVar.matcher(mathText);
-                Matcher matchNum = regNum.matcher(mathText);
+                String[] operands = operation.split("[+\\-*/\\s]+");
 
-                ArrayList<String> tokens = new ArrayList<>();
-                ArrayList<String> numbers = new ArrayList<>();
-
-                while (matchVar.find()) {
-                    tokens.add(matchVar.group());
-                }
-                while (matchNum.find()) {
-                    numbers.add(matchNum.group());
-                }
-
-                for (String t : tokens) {
-                    Variavel variable = cv.busca(t);
-                    switch(variable.getTipo()){
-                        case 0: numInt+=1; break;
-                        case 1: System.out.println("Can't use Text in a mathematical operation"); System.exit(1);
-                        case 2: numFloat+=1; break;
-                        default: System.out.println(variable.getValor() + " is not a valid operand\n"); System.exit(1);
+                try {
+                    for (String o : operands) {
+                        if(o.matches(".*\\d+.*")){
+                            if (isInteger(o)) {
+                                numInt+=1;
+                            } else if (isFloat(o)) {
+                                numFloat+=1;
+                            } else {
+                                throw new Exception(o + " is not a valid operand\n");
+                            }
+                        }else{
+                            if(vc.exists(o) == false){
+                                throw new Exception("Variable "+o+" is not declared!");
+                            }
+                            Variable variable = vc.search(o);
+                            switch(variable.getType()){
+                                case 0: numInt+=1; break;
+                                case 1: throw new Exception("Can't use Text in a mathematical operation");
+                                case 2: numFloat+=1; break;
+                                default: throw new Exception(variable.getValue() + " is not a valid operand\n");
+                            }
+                        }
                     }
-                }
-                for (String n : numbers) {
-                    if (isInteger(n)) {
-                        numInt+=1;
-                    } else if (isFloat(n)) {
-                        numFloat+=1;
-                    } else {
-                        System.out.println(n + " is not a valid operand\n");
-                        System.exit(1);
-                    }
-                }
 
-                if (!((numInt > 0 && numFloat == 0) || (numInt == 0 && numFloat > 0))) {
-                    System.out.println("Only one variable type is supported during math expressions");
+                    if (!((numInt > 0 && numFloat == 0) || (numInt == 0 && numFloat > 0))) {
+                        throw new Exception("Only one variable type is supported during math expressions");
+                    }
+                } catch(Exception e){
+                    e.printStackTrace();
                     System.exit(1);
                 }
             } 
@@ -219,79 +250,131 @@ mathMul: unaryExpr (('*' | '/' | '%') unaryExpr)* ;
 
 unaryExpr: ('+' | '-')? (primary | '(' mathAdd ')') ;
 
-comp:   primary (OPREL | '==') primary ;
+comp:   primary 
+        {
+            String op_1 = "";
+            if(isInteger($primary.text)){
+                op_1 = "int";
+            }else if(isFloat($primary.text)){
+                op_1 = "float";
+            }else{
+                isDeclared($primary.text);
+                Variable var_1 = vc.search($primary.text);
+                if(var_1.getType() == 0){
+                    op_1 = "int";
+                }else if(var_1.getType() == 1){
+                    op_1 = "String";
+                }else{
+                    op_1 = "float";
+                }
+            }
+        }
+        (OPREL | '==') 
+        primary
+        {
+            String op_2 = "";
+            if(isInteger($primary.text)){
+                op_2 = "int";
+            }else if(isFloat($primary.text)){
+                op_2 = "float";
+            }else{
+                isDeclared($primary.text);
+                Variable var_2 = vc.search($primary.text);
+                if(var_2.getType() == 0){
+                    op_2 = "int";
+                }else if(var_2.getType() == 1){
+                    op_2 = "String";
+                }else{
+                    op_2 = "float";
+                }
+            }
+        }
+        {
+            try{
+                if(op_1 != op_2){
+                    throw new Exception("You can't compare variables with different types");
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+                System.exit(1);
+            }
+            
+        }
+    ;
 
 comptext:   STRING ('==') STRING ;
 
 cond:   'when' AP (comp|comptext) FP 'do'
         AC  
         {
-            codigoJava += "if ("+$comp.text+") {\n";
+            javaCode += "if ("+$comp.text+") {\n";
             insideExpr ++;
         }
         expr 
         {
-            codigoJava += "\t";
+            javaCode += "\t";
             if(insideExpr > 1){
                 for(int i=0; i<insideExpr; i++){
-                    codigoJava += "\t";
+                    javaCode += "\t";
                 }
-                codigoJava += "}";
+                javaCode += "}";
             } else{
-                codigoJava += "\t}";
+                javaCode += "\t}";
             }
         }
         FC   
 		(
-            'else' 'when' AP (comp|comptext) FP {codigoJava += " else if ("+$comp.text+")";}
+            'else' 'when' AP (comp|comptext) FP {javaCode += " else if ("+$comp.text+")";}
             AC 
             {
-                codigoJava += "{\n";
+                javaCode += "{\n";
             }
             expr 
             {
-                codigoJava += "\t";
+                javaCode += "\t";
                 if(insideExpr > 1){
                     for(int i=0; i<insideExpr; i++){
-                        codigoJava += "\t";
+                        javaCode += "\t";
                     }
-                    codigoJava += "}";
+                    javaCode += "}";
                 } else{
-                    codigoJava += "\t}";
+                    javaCode += "\t}";
                 }
             }
             FC 
         )*
         (
-            'else' {codigoJava += " else ";}
+            'else' {javaCode += " else ";}
             AC 
             {
-                codigoJava += "{\n";
+                javaCode += "{\n";
             }
             expr 
             {
-                codigoJava += "\t";
+                javaCode += "\t";
                 if(insideExpr > 1){
                     for(int i=0; i<insideExpr; i++){
-                        codigoJava += "\t";
+                        javaCode += "\t";
                     }
-                    codigoJava += "}";
+                    javaCode += "}";
                 } else{
-                    codigoJava += "\t}";
+                    javaCode += "\t}";
                 }
             }
             FC 
         )?
-        {codigoJava += "\n";}
+        {javaCode += "\n";}
         {insideExpr --;}
 	;
 
 printf: 'outX' 
         AP 
         (
-            printTypes { codigoJava += "System.out.println("+$printTypes.text+");\n"; }
+            printTypes { javaCode += "System.out.println("+$printTypes.text; }
+            ('+' printTypes { javaCode += " + "+$printTypes.text; } )*
+            { javaCode += ");\n"; }
             | 
-            mathExpr { codigoJava += "System.out.println("+mathText+");\n"; }
+            mathExpr { javaCode += "System.out.println("+mathText+");\n"; }
         ) 
         FP
     ;
@@ -304,20 +387,20 @@ scanf:  'inX'
                 hasScan = true;
                 if(insideExpr > 0){
                     for(int i=0; i<insideExpr; i++){
-                        codigoJava += "\t";
+                        javaCode += "\t";
                     }
                 }
-                codigoJava += "Scanner scan = new Scanner(System.in);\n";
+                javaCode += "Scanner scan = new Scanner(System.in);\n";
             }
         }
         declare 
         {
-            Variavel var = cv.busca($declare.text.substring(3));
-            switch(var.getTipo()){
-                case 0: codigoJava += " = Integer.parseInt(scan.nextLine());\n"; break;
-                case 1: codigoJava += " = scan.nextLine();\n"; break;
-                case 2: codigoJava += " = Float.parseFloat(scan.nextLine());\n"; break;
-                default: System.out.println("Unknown error while declaring variable " + var.getNome()); break;
+            Variable var = vc.search($declare.text.substring(3));
+            switch(var.getType()){
+                case 0: javaCode += " = Integer.parseInt(scan.nextLine());\n"; break;
+                case 1: javaCode += " = scan.nextLine();\n"; break;
+                case 2: javaCode += " = Float.parseFloat(scan.nextLine());\n"; break;
+                default: System.out.println("Unknown error while declaring variable " + var.getName()); break;
             }
             initScan = false;
         }
@@ -326,56 +409,90 @@ scanf:  'inX'
 
 for:    'iterate' AP
         { 
-            codigoJava += "for(";
+            javaCode += "for(";
             insideExpr ++;
-            initFor = true;
+            initFor = insideFor = true;
         }
-        (ID {forText = $ID.text;} | declare | atrib) 
+        (ID {forText = $ID.text;} | atrib | declare) 
         
         { 
-            codigoJava += "; "+forText; 
+            javaCode += "; "+forText; 
             initFor = false;
         }
 
         LOOP primary
         {
-            codigoJava += " < "+$primary.text+"; "+forText+"++)";
+            javaCode += " < "+$primary.text+"; "+forText+"++)";
         }
         
         FP
 
-        AC {codigoJava+="{\n";} 
+        AC {javaCode+="{\n";} 
         expr 
         FC 
         {
             insideExpr --;
             if(insideExpr > 0){
                 for(int i=0; i<insideExpr; i++){
-                    codigoJava+="\t";
+                    javaCode+="\t";
                 }
             }
-            codigoJava+="\t\t}\n";
+            javaCode+="\t\t}\n";
+            insideFor = false;
         }
     ;
 
 while:  LOOP 
         { 
-            codigoJava += "while";
+            javaCode += "while";
             insideExpr++;
         }
-        AP comp FP {codigoJava += "("+$comp.text+"){\n";}
+        AP 
+        (
+            comp {javaCode += "("+$comp.text+"){\n";} 
+            |comptext {javaCode += "("+$comptext.text+"){\n";}
+        ) 
+        FP
+
         AC
-        expr 
+        expr
         FC 
         {
-            codigoJava += "\t\t}";
             insideExpr--;
+            tab();
+            javaCode += "}";
+        }
+    ;
+
+increment:  ID OP_INC
+            { 
+                javaCode += $ID.text; 
+                if($OP_INC.text.equals(">+")){
+                    javaCode += "++;\n"; 
+                }else{
+                    javaCode += "--;\n";
+                }
+            }
+    ;
+
+break:  'break'
+        { 
+            try{
+                if(insideFor){
+                    throw new Exception("Break outside of a loop!");
+                }
+                javaCode += "break;\n"; 
+            } catch(Exception e){
+                e.printStackTrace();
+                System.exit(1);
+            }
         }
     ;
 
 printTypes: 
     STRING |
     |   primary
+    |   '(' mathAdd ')'
     ;
 
 primary: 
@@ -396,5 +513,5 @@ FC: '}' ;
 AP: '(' ;
 FP: ')' ;
 OP_ATRIB: '>>';
-OP_INPUT: '<<';
+OP_INC: '>+' | '>-';
 WS: [ \t\r\n]+ -> skip;

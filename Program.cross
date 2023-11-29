@@ -1,8 +1,9 @@
 X+
-	nat b >> :6 + 5
+	dec b >> :5.2 + 1.5
 	dec c >> 22.5
 	nat x >> 0
-	inX(dec t)
+	dec y >> 2.5
+	inX(nat t)
 	outX(t)
 	outX(c)
 	when (b < c) do {
@@ -12,8 +13,8 @@ X+
 			outX("teste2")
 			when (c == c) do {
 				outX("teste3")
-			} else when (t < c){
-				outX(:c + t)
+			} else when (y < c){
+				outX(:5.4 + 2.5)
 			} else {
 				iterate (x >> 0 -> 2){
 					outX(x)
@@ -36,5 +37,7 @@ X+
 	
 	-> (x < 6) {
 		outX("x < 5!")
+		x>+
+		stopX
 	}
 X-

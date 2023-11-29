@@ -1,9 +1,6 @@
 // Generated from crossLanguage.g4 by ANTLR 4.13.1
 
     import java.util.*;
-    import java.util.ArrayList;
-    import java.util.regex.Matcher;
-    import java.util.regex.Pattern;
 
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -22,13 +19,13 @@ public class crossLanguageBaseListener implements crossLanguageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVai(crossLanguageParser.VaiContext ctx) { }
+	@Override public void enterStart(crossLanguageParser.StartContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVai(crossLanguageParser.VaiContext ctx) { }
+	@Override public void exitStart(crossLanguageParser.StartContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -58,13 +55,13 @@ public class crossLanguageBaseListener implements crossLanguageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTipo(crossLanguageParser.TipoContext ctx) { }
+	@Override public void enterType(crossLanguageParser.TypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTipo(crossLanguageParser.TipoContext ctx) { }
+	@Override public void exitType(crossLanguageParser.TypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -209,6 +206,30 @@ public class crossLanguageBaseListener implements crossLanguageListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitWhile(crossLanguageParser.WhileContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIncrement(crossLanguageParser.IncrementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIncrement(crossLanguageParser.IncrementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBreak(crossLanguageParser.BreakContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBreak(crossLanguageParser.BreakContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -1,0 +1,7 @@
+X+
+	dec x >> 0.5
+	outX("Insert a decimal number: ")
+	inX(dec y)
+	dec z >> :(0.5 + y)*2.0
+	outX("("+y+" + "+x+") * 2 = "+z)
+X-
