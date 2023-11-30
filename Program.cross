@@ -1,43 +1,32 @@
 X+
-	dec b >> :5.2 + 1.5
-	dec c >> 22.5
-	nat x >> 0
-	dec y >> 2.5
-	inX(nat t)
-	outX(t)
-	outX(c)
-	when (b < c) do {
-		outX("C is higher")
-		outX("teste1")
-		when (x > t) do {
-			outX("teste2")
-			when (c == c) do {
-				outX("teste3")
-			} else when (y < c){
-				outX(:5.4 + 2.5)
-			} else {
-				iterate (x >> 0 -> 2){
-					outX(x)
-					nat ab >> 7
-					iterate (x >> 1 -> 7){
-						outX(x)
-					}
-				}
-			}
+	nat escolha >> 5
+	dec numOne >> 0.0, numTwo >> 0.0
+	-> (escolha != 0){
+		outX("===== Calculadora =====")
+		outX("Digite uma das opcoes:")
+		outX("  - 1: Adicao")
+		outX("  - 2: Subtracao")
+		outX("  - 3: Multilplicacao")
+		outX("  - 4: Divisao")
+		outX("  - 0: Sair\n")
+		inX(escolha)
+		when(escolha != 0) do{
+			outX("\nDigite o primeiro numero: ")
+			inX(numOne)
+			outX("\nDigite o segundo numero: ")
+			inX(numTwo)
 		}
-	} else when (b > c){
-		outX("B is higher")
-	} else {
-		outX("They are equal")
-	}
-
-	iterate (x -> 5){
-		outX(x)
-	}
-	
-	-> (x < 6) {
-		outX("x < 5!")
-		x>+
-		stopX
+		when(escolha == 1) do{
+			outX("\nA soma de "+numOne+" com "+numTwo+" = "+(numOne+numTwo)+"\n")
+		}else when(escolha == 2){
+			outX("\nA subtracao de "+numOne+" com "+numTwo+" = "+(numOne-numTwo)+"\n")
+		}else when(escolha == 3){
+			outX("\nA multilplicacao de "+numOne+" com "+numTwo+" = "+(numOne*numTwo)+"\n")
+		}else when(escolha == 4){
+			outX("\nA divisao de "+numOne+" com "+numTwo+" = "+(numOne/numTwo)+"\n")
+		}else when(escolha == 0){
+			outX("\nObrigado!")
+			break
+		}
 	}
 X-

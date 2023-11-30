@@ -63,7 +63,7 @@ start:
         'X+'
         { 
             javaCode += "import java.util.*;\n\n";
-		    javaCode += "public class Codigo{\n";
+		    javaCode += "public class Main{\n";
             javaCode += "\tpublic static void main(String args[]){\n"; 
 		}
 		expr
@@ -95,16 +95,17 @@ declare:    (
     ;
 
 atrib:  ID 
-        { 
-            newVariable = new Variable($ID.text, type, value);
+        {   
+            String name = $ID.text;
+            newVariable = new Variable(name, type, value);
             notDeclared = vc.add(newVariable);
             if(!notDeclared){
-                newVariable = vc.search($ID.text);
+                newVariable = vc.search(name);
                 type = newVariable.getType();
             }
-            javaCode += $ID.text;
+            javaCode += name;
             if(insideFor){
-                forText = $ID.text;
+                forText = name;
             }
         }
         (
@@ -298,11 +299,11 @@ comp:   primary
                 e.printStackTrace();
                 System.exit(1);
             }
-            
         }
+        ( ( '||' | '&&' ) (comp | comptext))*
     ;
 
-comptext:   STRING ('==') STRING ;
+comptext:   STRING ('==') STRING ( ( '||' | '&&' ) (comp | comptext))*;
 
 cond:   'when' AP (comp|comptext) FP 'do'
         AC  
@@ -386,24 +387,40 @@ scanf:  'inX'
             if(hasScan == false){
                 hasScan = true;
                 if(insideExpr > 0){
-                    for(int i=0; i<insideExpr; i++){
+                    for(int i=1; i<insideExpr; i++){
                         javaCode += "\t";
                     }
                 }
                 javaCode += "Scanner scan = new Scanner(System.in);\n";
+                tab();
             }
         }
-        declare 
-        {
-            Variable var = vc.search($declare.text.substring(3));
-            switch(var.getType()){
-                case 0: javaCode += " = Integer.parseInt(scan.nextLine());\n"; break;
-                case 1: javaCode += " = scan.nextLine();\n"; break;
-                case 2: javaCode += " = Float.parseFloat(scan.nextLine());\n"; break;
-                default: System.out.println("Unknown error while declaring variable " + var.getName()); break;
+        (
+            ID
+            {
+                Variable var = vc.search($ID.text);
+                javaCode += var.getName();
+                switch(var.getType()){
+                    case 0: javaCode += " = Integer.parseInt(scan.nextLine());\n"; break;
+                    case 1: javaCode += " = scan.nextLine();\n"; break;
+                    case 2: javaCode += " = Float.parseFloat(scan.nextLine());\n"; break;
+                    default: System.out.println("Unknown error while declaring variable " + var.getName()); break;
+                }
+                initScan = false;
             }
-            initScan = false;
-        }
+            |
+            declare 
+            {
+                Variable var = vc.search($declare.text.substring(3));
+                switch(var.getType()){
+                    case 0: javaCode += " = Integer.parseInt(scan.nextLine());\n"; break;
+                    case 1: javaCode += " = scan.nextLine();\n"; break;
+                    case 2: javaCode += " = Float.parseFloat(scan.nextLine());\n"; break;
+                    default: System.out.println("Unknown error while declaring variable " + var.getName()); break;
+                }
+                initScan = false;
+            }
+        )
         FP
     ;
 
@@ -506,7 +523,7 @@ STRING: '"' .*? '"';
 NUM: [0-9]+;
 DEC: [0-9]+ '.' [0-9]+;
 OPMAT: ':' ;
-OPREL: '>' | '<' | '>=' | '<=' | '!=' ;
+OPREL: '>' | '<' | '>=' | '<=' | '!=';
 LOOP: '->';
 AC: '{' ;
 FC: '}' ;
